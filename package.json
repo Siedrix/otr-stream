@@ -1,0 +1,21 @@
+{
+  "name": "otr-stream",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "co": "^4.6.0",
+    "koa": "^2.0.0-alpha.3",
+    "koa-bodyparser": "^2.0.1",
+    "koa-convert": "^1.2.0",
+    "koa-router": "^5.4.0",
+    "koa-static": "^2.0.0",
+    "koa-swig": "^2.1.0",
+    "socket.io": "^1.4.5"
+  }
+}
