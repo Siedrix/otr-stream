@@ -5,12 +5,26 @@ var serve = require('koa-static')
 var bodyParser = require('koa-bodyparser')
 var path = require('path')
 var http = require('http')
-var IO = require('socket.io')
+var mongoose = require('mongoose');
+
+// Mongoose connect and models
+var Schema = mongoose.Schema;
+mongoose.connect('mongodb://localhost/otr');
+
+var MessageSchema = new Schema({
+	fingerprint: {type: String, required: true},
+	messageKey: {type: String, required: true},
+	content: {type: String, required: true},
+	createdAt: { type: Date, expires: '24h', default: Date.now }
+})
+
+var Messages = mongoose.model('Message', MessageSchema)
 
 // Creates app
 var app = new Koa()
 var server = http.createServer(app.callback())
-var io = IO(server)
+
+server.db = mongoose
 
 // Add render
 var render = require('koa-swig')
@@ -53,23 +67,44 @@ router.get('/', function *(ctx) {
 	yield this.render('index', {})
 })
 
+router.get('/client', function *(ctx) {
+	// this.body = 'hello world'
+	yield this.render('client', {})
+})
+
+router.post('/messages', function *(ctx) {
+	var body = this.request.body;
+
+	if(!body.content){
+		return this.body = this.throw(422, 'Messages requires content')
+	}
+
+	if(!body.recipients || !body.recipients.length){
+		return this.body = this.throw(422, 'Messages requires at least one recipient')
+	}
+
+	var message = yield Messages.create(body.recipients.map(function(item){
+		return {
+			fingerprint : item.fingerprint,
+			messageKey : item.messageKey,
+			content : body.content
+		}
+	}))
+
+	if(message){
+		this.body = {success:true}
+	}else{
+		this.body = {success:false, error:'Messages couldn\'t create message'}
+	}
+})
+
+router.get('/messages/:fingerprint', function *(ctx) {
+	var messages = yield Messages.find({fingerprint:this.params.fingerprint})
+
+	this.body = messages
+})
+
 app.use( convert(router.routes()) )
 	.use( convert(router.allowedMethods()) )
 
-io.on('connection', function (socket) {
-	console.log('socket connected')
-
-	socket.on('join', function(data){
-		console.log('socket join to:', data)
-
-		socket.broadcast.emit('user-connected', data)
-	})
-
-	socket.on('disconnect', function () {
-		console.log('socket disconnect')
-	})
-})
-
-server.listen(3000, function(){
-	console.log('server running')
-})
+module.exports = server

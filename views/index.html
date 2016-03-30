@@ -7,28 +7,10 @@
 {% endblock %}
 
 {% block content %}
-<h4>Your key</h4>
-<p id="private-key"></p>
-<p id="public-key"></p>
-
-<h4>Add keys</h4>
-<p><input id="keyname"></input></p>
-<p><textarea id="key"></textarea></p>
-<p><button id="add-key">Add key</button></p>
+<h4>Welcome to this OTR Stream server</h4>
+<p>This is a secure way to send messages, just need to find a good way to your public key to a friend</p>
+<p>Check the <a href="/client">client</a> to start sending messages</p>
+<p>Check the <a href="https://github.com/Siedrix/otr-stream">github repo</a> to set up your own server or review the code</p>
 {% endblock %}
 
-{% block js %}
-<script src="/vendors/jquery-2.2.1.min.js"></script>
-<script src="/vendors/underscore-min.js"></script>
-<script src="/vendors/backbone-min.js"></script>
-<!-- Real time deps -->
-<script src="/socket.io/socket.io.js"></script>
-<!-- <script src="/vendors/peer.min.js"></script> -->
-
-<script src="/vendors/forge.min.js"></script>
-
-<!-- Load app -->
-<script src="/build/main.js"></script>
-
-<script src="//localhost:35729/livereload.js"></script>
-{% endblock %}
+{% block js %}{% endblock %}

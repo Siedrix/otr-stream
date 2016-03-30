@@ -1,0 +1,2 @@
+/* global Backbone */
+/* global _ */

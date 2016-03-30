@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+
+{% block title %}My Page{% endblock %}
+
+{% block head %}
+	{% parent %}
+{% endblock %}
+
+{% block content %}
+<h4>Your key</h4>
+<p id="private-key"></p>
+<p id="public-key"></p>
+
+<div id="counter"></div>
+
+<h4>Add keys</h4>
+<p><input id="keyname"></input></p>
+<p><textarea id="key"></textarea></p>
+<p><button id="add-key">Add key</button></p>
+{% endblock %}
+
+{% block js %}
+<script src="/vendors/jquery-2.2.1.min.js"></script>
+<script src="/vendors/underscore-min.js"></script>
+<script src="/vendors/backbone-min.js"></script>
+<!-- Real time deps -->
+<script src="/vendors/forge.min.js"></script>
+
+<!-- Load app -->
+<script src="/build/main.js"></script>
+
+<script src="//localhost:35729/livereload.js"></script>
+{% endblock %}
